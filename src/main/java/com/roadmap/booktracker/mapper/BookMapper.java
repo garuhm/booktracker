@@ -63,9 +63,4 @@ public class BookMapper {
                 book.getReviews().size()
         );
     }
-
-    public static void mapGenresToBook(Set<Genre> genres, Book book) {
-        book.setGenres(genres);
-    }
-    public static void mapAuthorsToBook(Set<Author> authors, Book book) { book.setAuthors(authors); }
 }
