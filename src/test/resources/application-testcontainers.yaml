@@ -1,0 +1,8 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    locations:
+      - classpath:db/migration
+      - classpath:db/migration

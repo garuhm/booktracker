@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final GenreRepository genreRepository;
 
+    @Transactional
     public void createBook(CreateBookRequest request) {
         Book book = BookMapper.createRequestToEntity(request);
 

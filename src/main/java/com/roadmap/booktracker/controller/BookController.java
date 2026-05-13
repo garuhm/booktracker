@@ -5,6 +5,7 @@ import com.roadmap.booktracker.dto.book.CreateBookRequest;
 import com.roadmap.booktracker.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BookController {
     private final BookService bookService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Void> createBook(@Valid @RequestBody CreateBookRequest request) {
         bookService.createBook(request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
