@@ -1,5 +1,8 @@
 package com.roadmap.booktracker.service;
 
+import com.roadmap.booktracker.controller.filter.BookFilter;
+import com.roadmap.booktracker.controller.filter.BookSpecification;
+import com.roadmap.booktracker.dto.book.BookSummary;
 import com.roadmap.booktracker.dto.book.CreateBookRequest;
 import com.roadmap.booktracker.entity.Author;
 import com.roadmap.booktracker.entity.Book;
@@ -11,6 +14,8 @@ import com.roadmap.booktracker.repo.GenreRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,5 +52,10 @@ public class BookService {
         book.setGenres(genres);
 
         bookRepository.save(book);
+    }
+
+    public Page<BookSummary> getAllBooks(BookFilter filter, Pageable pageable) {
+        return bookRepository.findAll(BookSpecification.fromFilter(filter), pageable)
+                .map(BookMapper::toSummary);
     }
 }
