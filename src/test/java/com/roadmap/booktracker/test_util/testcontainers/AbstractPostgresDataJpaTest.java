@@ -1,4 +1,4 @@
-package com.roadmap.booktracker.testcontainers;
+package com.roadmap.booktracker.test_util.testcontainers;
 
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;

@@ -3,12 +3,12 @@ package com.roadmap.booktracker;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableConfigurationProperties({
 })
-@EnableScheduling
+@EnableJpaAuditing
 public class BooktrackerApplication {
 
     public static void main(String[] args) {

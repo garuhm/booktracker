@@ -1,4 +1,4 @@
-package com.roadmap.booktracker.testcontainers;
+package com.roadmap.booktracker.test_util.testcontainers;
 
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
