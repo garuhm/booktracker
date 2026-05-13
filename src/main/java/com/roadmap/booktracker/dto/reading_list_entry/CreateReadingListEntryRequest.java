@@ -7,11 +7,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record CreateReadingListEntryRequest(
-        @NotBlank(message = "Book ID cannot be blank")
+        @NotNull(message = "Book ID cannot be blank")
         UUID bookId,
         @NotNull(message = "Pages read cannot be blank")
-        int pagesRead,
-        @NotBlank(message = "Started at cannot be blank")
+        Integer pagesRead,
+        @NotNull(message = "Started at cannot be blank")
         Instant startedAt
 ) {
 }

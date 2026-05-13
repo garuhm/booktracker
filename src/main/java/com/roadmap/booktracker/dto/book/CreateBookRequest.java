@@ -16,9 +16,9 @@ public record CreateBookRequest(
         List<UUID> authorIds,
         @NotNull(message = "Pages cannot be blank")
         @Min(value = 1, message = "Pages must be greater than 0")
-        int pages,
+        Integer pages,
         @NotNull(message = "Published year cannot be blank")
-        int publishedYear,
+        Integer publishedYear,
         @NotEmpty(message = "Genre IDs cannot be empty")
         List<UUID> genreIds
 ) {

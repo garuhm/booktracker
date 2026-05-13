@@ -9,6 +9,6 @@ public record CreateReviewRequest(
         String review,
         @NotNull(message = "Rating cannot be missing")
         @Range(min = 1, max = 5, message = "Rating must be between 1 and 5")
-        int rating
+        Integer rating
 ) {
 }
