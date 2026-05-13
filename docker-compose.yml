@@ -1,0 +1,15 @@
+services:
+  booktracker-db:
+    image: postgres:18.3
+    container_name: booktracker-db
+    environment:
+      POSTGRES_DB: booktracker
+      POSTGRES_USER: booktracker
+      POSTGRES_PASSWORD: booktracker
+    ports:
+      - "5000:5432"
+    volumes:
+      - db:/var/lib/postgresql
+
+volumes:
+  db:

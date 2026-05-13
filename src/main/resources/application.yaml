@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: booktracker
+  datasource:
+    url: jdbc:postgresql://localhost:5000/booktracker
+    username: booktracker
+    password: booktracker
+
+  jpa:
+    hibernate:
+      ddl-auto: update
