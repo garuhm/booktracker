@@ -1,15 +1,12 @@
 package com.roadmap.booktracker.mapper;
 
-import com.roadmap.booktracker.dto.author.AuthorSummary;
 import com.roadmap.booktracker.dto.book.BookResponse;
 import com.roadmap.booktracker.dto.book.BookSummary;
 import com.roadmap.booktracker.dto.book.CreateBookRequest;
 import com.roadmap.booktracker.dto.book.UpdateBookRequest;
-import com.roadmap.booktracker.entity.Author;
 import com.roadmap.booktracker.entity.Book;
 import com.roadmap.booktracker.entity.Genre;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BookMapper {
@@ -30,7 +27,7 @@ public class BookMapper {
         return book;
     }
 
-    public static BookResponse toDto(Book book) {
+    public static BookResponse toResponse(Book book) {
         return new BookResponse(
                 book.getId(),
                 book.getTitle(),

@@ -2,6 +2,7 @@ package com.roadmap.booktracker.controller;
 
 import com.roadmap.booktracker.controller.annotation.ApiVersion;
 import com.roadmap.booktracker.controller.filter.BookFilter;
+import com.roadmap.booktracker.dto.book.BookResponse;
 import com.roadmap.booktracker.dto.book.BookSummary;
 import com.roadmap.booktracker.dto.book.CreateBookRequest;
 import com.roadmap.booktracker.service.BookService;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,5 +32,10 @@ public class BookController {
     @GetMapping("")
     public ResponseEntity<Page<BookSummary>> getAllBooks(@ParameterObject BookFilter filter, Pageable pageable) {
         return ResponseEntity.ok(bookService.getAllBooks(filter, pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookResponse> getBookById(@PathVariable UUID id) {
+        return ResponseEntity.ok(bookService.getById(id));
     }
 }

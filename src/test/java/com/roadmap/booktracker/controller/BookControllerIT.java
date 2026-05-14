@@ -448,4 +448,41 @@ public class BookControllerIT extends AbstractPostgresIT {
                     .andExpect(status().isOk());
         }
     }
+
+    @DisplayName("GET /api/{ver}/books/{id}")
+    @Nested
+    class GetBookById{
+        private String endpoint = ApiVersioningResolver.resolve(BookController.class, "getBookById", "/books/{id}");
+
+        @Test
+        @DisplayName("Get book by valid id; 200")
+        void getBookByValidId() throws Exception {
+            mockMvc.perform(get(endpoint, "c1000000-0000-0000-0000-000000000001"))
+                    .andExpect(jsonPath("$.id").value("c1000000-0000-0000-0000-000000000001"))
+                    .andExpect(jsonPath("$.title").value("1984"))
+                    .andExpect(jsonPath("$.pages").value(328))
+                    .andExpect(jsonPath("$.publishedYear").value(1949))
+                    .andExpect(jsonPath("$.averageRating").value(4.6))
+                    .andExpect(jsonPath("$.authors").isArray())
+                    .andExpect(jsonPath("$.authors", hasSize(1)))
+                    .andExpect(jsonPath("$.genres").isArray())
+                    .andExpect(jsonPath("$.genres", hasSize(2)))
+                    .andExpect(jsonPath("$.reviewCount").value(2))
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        @DisplayName("Get book by nonexistent id; 404")
+        void getBookByNonexistentId() throws Exception {
+            mockMvc.perform(get(endpoint,UUID.randomUUID()))
+                    .andExpect(status().isNotFound());
+        }
+
+        @Test
+        @DisplayName("Get book by invalid id format; 400")
+        void getBookByInvalidId() throws Exception {
+            mockMvc.perform(get(endpoint, "not-a-uuid"))
+                    .andExpect(status().isBadRequest());
+        }
+    }
 }
