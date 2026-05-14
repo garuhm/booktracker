@@ -4,27 +4,31 @@ import com.roadmap.booktracker.dto.book.BookResponse;
 import com.roadmap.booktracker.dto.book.BookSummary;
 import com.roadmap.booktracker.dto.book.CreateBookRequest;
 import com.roadmap.booktracker.dto.book.UpdateBookRequest;
+import com.roadmap.booktracker.entity.Author;
 import com.roadmap.booktracker.entity.Book;
 import com.roadmap.booktracker.entity.Genre;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BookMapper {
-    public static Book createRequestToEntity(CreateBookRequest request) {
+    public static Book createRequestToEntity(CreateBookRequest request, Set<Author> authors, Set<Genre> genres) {
         return Book.builder()
                 .title(request.title())
                 .description(request.description())
                 .publishedYear(request.publishedYear())
                 .pages(request.pages())
+                .authors(authors)
+                .genres(genres)
                 .build();
     }
 
-    public static Book updateRequestToEntity(UpdateBookRequest request, Book book) {
+    public static void updateRequestToEntity(UpdateBookRequest request, Book book, Set<Author> newAuthors, Set<Genre> newGenres) {
         if(request.title() != null) book.setTitle(request.title());
         if(request.description() != null) book.setDescription(request.description());
         if(request.publishedYear() != null) book.setPublishedYear(request.publishedYear());
-
-        return book;
+        if(request.authorIds() != null) book.setAuthors(newAuthors);
+        if(request.genreIds() != null) book.setGenres(newGenres);
     }
 
     public static BookResponse toResponse(Book book) {

@@ -7,6 +7,7 @@ public record UpdateBookRequest(
         String title,
         String description,
         Integer publishedYear,
-        List<UUID> authorIds
+        List<UUID> authorIds,
+        List<UUID> genreIds
 ) {
 }

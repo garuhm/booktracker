@@ -1,9 +1,11 @@
 package com.roadmap.booktracker.controller;
 
 import com.roadmap.booktracker.dto.book.CreateBookRequest;
+import com.roadmap.booktracker.dto.book.UpdateBookRequest;
 import com.roadmap.booktracker.entity.Author;
 import com.roadmap.booktracker.entity.Book;
 import com.roadmap.booktracker.entity.Genre;
+import com.roadmap.booktracker.mapper.BookMapper;
 import com.roadmap.booktracker.repo.AuthorRepository;
 import com.roadmap.booktracker.repo.BookRepository;
 import com.roadmap.booktracker.repo.GenreRepository;
@@ -14,8 +16,10 @@ import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
@@ -26,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -482,6 +487,76 @@ public class BookControllerIT extends AbstractPostgresIT {
         @DisplayName("Get book by invalid id format; 400")
         void getBookByInvalidId() throws Exception {
             mockMvc.perform(get(endpoint, "not-a-uuid"))
+                    .andExpect(status().isBadRequest());
+        }
+    }
+
+    @DisplayName("PUT /api/{ver}/books/{id}")
+    @Nested
+    class UpdateBookById{
+        private String endpoint = ApiVersioningResolver.resolve(BookController.class, "updateBookById", "/books/{id}");
+
+        @Transactional
+        @Test
+        @DisplayName("Update existing book by valid id; 204")
+        void updateExistingBookByValidId() throws Exception {
+            UpdateBookRequest request = new UpdateBookRequest(
+                    "Dewne",
+                    null,
+                    null,
+                    List.of(UUID.fromString("b1000000-0000-0000-0000-000000000001"),
+                            UUID.fromString("b1000000-0000-0000-0000-000000000004")),
+                    null
+            );
+
+            mockMvc.perform(put(endpoint, "c1000000-0000-0000-0000-000000000001")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isCreated());
+
+            mockMvc.perform(get(endpoint, "c1000000-0000-0000-0000-000000000001"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.title").value("Dewne"))
+                    .andExpect(jsonPath("$.authors").isArray())
+                    .andExpect(jsonPath("$.authors", hasSize(2)))
+                    .andExpect(jsonPath("$.authors[0].firstName").value("George"))
+                    .andExpect(jsonPath("$.authors[1].firstName").value("Agatha"));
+        }
+
+        @Transactional
+        @Test
+        @DisplayName("Update nonexistent book by valid id format; 404")
+        void updateNonexistentBookByValidIdFormat() throws Exception {
+            UpdateBookRequest request = new UpdateBookRequest(
+                    "Dewne",
+                    null,
+                    null,
+                    List.of(UUID.fromString("b1000000-0000-0000-0000-000000000001"),
+                            UUID.fromString("b1000000-0000-0000-0000-000000000004")),
+                    null
+            );
+
+            mockMvc.perform(put(endpoint, "b1000000-0000-0000-0000-000000000020")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)))
+                    .andExpect(status().isNotFound());
+        }
+
+        @Transactional
+        @Test
+        @DisplayName("Update nonexistent book by invalid id; 400")
+        void updateNonexistentBookByInvalidId() throws Exception {
+            UpdateBookRequest request = new UpdateBookRequest(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            mockMvc.perform(put(endpoint, "invalid-id")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request)))
                     .andExpect(status().isBadRequest());
         }
     }

@@ -5,6 +5,7 @@ import com.roadmap.booktracker.controller.filter.BookFilter;
 import com.roadmap.booktracker.dto.book.BookResponse;
 import com.roadmap.booktracker.dto.book.BookSummary;
 import com.roadmap.booktracker.dto.book.CreateBookRequest;
+import com.roadmap.booktracker.dto.book.UpdateBookRequest;
 import com.roadmap.booktracker.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,11 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<BookResponse> getBookById(@PathVariable UUID id) {
         return ResponseEntity.ok(bookService.getById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateBook(@PathVariable UUID id, @Valid @RequestBody UpdateBookRequest request) {
+        bookService.updateBook(request, id);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
