@@ -1,7 +1,7 @@
 package com.roadmap.booktracker.service;
 
 import com.roadmap.booktracker.controller.filter.BookFilter;
-import com.roadmap.booktracker.controller.filter.BookSpecification;
+import com.roadmap.booktracker.controller.filter.EntitySpecification;
 import com.roadmap.booktracker.dto.book.BookResponse;
 import com.roadmap.booktracker.dto.book.BookSummary;
 import com.roadmap.booktracker.dto.book.CreateBookRequest;
@@ -14,7 +14,6 @@ import com.roadmap.booktracker.repo.AuthorRepository;
 import com.roadmap.booktracker.repo.BookRepository;
 import com.roadmap.booktracker.repo.GenreRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +34,7 @@ public class BookService {
     private final GenreRepository genreRepository;
 
     @Transactional
-    public void createBook(CreateBookRequest request) {
+    public void create(CreateBookRequest request) {
         Set<Author> authors = resolveEntities(authorRepository, request.authorIds(), "author");
         Set<Genre> genres = resolveEntities(genreRepository, request.genreIds(), "genre");
         Book book = BookMapper.createRequestToEntity(request, authors, genres);
@@ -43,8 +42,8 @@ public class BookService {
         bookRepository.saveAndFlush(book);
     }
 
-    public Page<BookSummary> getAllBooks(BookFilter filter, Pageable pageable) {
-        return bookRepository.findAll(BookSpecification.fromFilter(filter), pageable)
+    public Page<BookSummary> getAll(BookFilter filter, Pageable pageable) {
+        return bookRepository.findAll(EntitySpecification.fromFilter(filter), pageable)
                 .map(BookMapper::toSummary);
     }
 
@@ -55,7 +54,7 @@ public class BookService {
     }
 
     @Transactional
-    public void updateBook(UpdateBookRequest request, UUID id) {
+    public void update(UpdateBookRequest request, UUID id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Book not found with id: " + id));
 

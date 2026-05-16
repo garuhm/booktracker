@@ -3,12 +3,15 @@ package com.roadmap.booktracker.repo;
 import com.roadmap.booktracker.dto.projection.AuthorSummaryProjection;
 import com.roadmap.booktracker.entity.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface AuthorRepository extends JpaRepository<Author, UUID> {
+public interface AuthorRepository extends
+        JpaRepository<Author, UUID>,
+        JpaSpecificationExecutor<Author> {
     @Query("SELECT a.firstName as firstName, " +
             "a.lastName as lastName, " +
             "COUNT(b) as bookCount " +

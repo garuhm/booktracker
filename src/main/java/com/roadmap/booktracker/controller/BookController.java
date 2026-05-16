@@ -26,13 +26,13 @@ public class BookController {
 
     @PostMapping("")
     public ResponseEntity<Void> createBook(@Valid @RequestBody CreateBookRequest request) {
-        bookService.createBook(request);
+        bookService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("")
     public ResponseEntity<Page<BookSummary>> getAllBooks(@ParameterObject BookFilter filter, Pageable pageable) {
-        return ResponseEntity.ok(bookService.getAllBooks(filter, pageable));
+        return ResponseEntity.ok(bookService.getAll(filter, pageable));
     }
 
     @GetMapping("/{id}")
@@ -42,7 +42,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateBook(@PathVariable UUID id, @Valid @RequestBody UpdateBookRequest request) {
-        bookService.updateBook(request, id);
+        bookService.update(request, id);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

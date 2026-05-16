@@ -5,10 +5,7 @@ import com.roadmap.booktracker.dto.book.UpdateBookRequest;
 import com.roadmap.booktracker.entity.Author;
 import com.roadmap.booktracker.entity.Book;
 import com.roadmap.booktracker.entity.Genre;
-import com.roadmap.booktracker.mapper.BookMapper;
-import com.roadmap.booktracker.repo.AuthorRepository;
 import com.roadmap.booktracker.repo.BookRepository;
-import com.roadmap.booktracker.repo.GenreRepository;
 import com.roadmap.booktracker.test_util.testcontainers.AbstractPostgresIT;
 import com.roadmap.booktracker.test_util.web.ApiVersioningResolver;
 import jakarta.persistence.EntityManager;
@@ -19,7 +16,6 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
@@ -46,12 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class BookControllerIT extends AbstractPostgresIT {
     @Autowired
     private BookRepository bookRepository;
-    @Autowired
-    private AuthorRepository authorRepository;
-    @Autowired
-    private GenreRepository genreRepository;
-    @Autowired
-    private BookController bookController;
 
     @Autowired
     private MockMvc mockMvc;
