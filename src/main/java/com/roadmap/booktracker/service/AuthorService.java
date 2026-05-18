@@ -27,7 +27,7 @@ public class AuthorService {
     }
 
     public AuthorResponse getById(UUID id) {
-        Author author = authorRepository.findById(id)
+        Author author = authorRepository.findByIdWithBooksAndAuthors(id)
                 .orElseThrow(() -> new EntityNotFoundException("Author not found with id: " + id));
         return AuthorMapper.toResponse(author);
     }

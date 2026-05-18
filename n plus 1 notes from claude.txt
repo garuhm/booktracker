@@ -1,0 +1,10 @@
+Single entity fetch (findById)
+    → one level of lazy collection  → @EntityGraph
+    → multiple levels or @ManyToMany chains → JOIN FETCH
+
+List/Page fetch (findAll)
+    → accessing collections on each entity → definitely N+1, use @EntityGraph or JOIN FETCH
+    → only accessing flat fields → no N+1, no fix needed
+
+Aggregation (COUNT, AVG, GROUP BY)
+    → always use @Query, N+1 doesn't apply
